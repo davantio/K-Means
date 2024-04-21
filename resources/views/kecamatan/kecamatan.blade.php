@@ -6,7 +6,7 @@
 @endsection
 
 @section('title')
-    <h3>Data Produksi</h3>
+    <h3>Data Kecamatan</h3>
     <br>
 @endsection
 
@@ -14,36 +14,31 @@
     <div class="card">
         <div class="card-header">
             <h5 class="card-title">
-                Tabel Luas Panen dan Hasil Produksi Jagung
+                Tabel Kode dan Nama Kecamatan
             </h5>
         </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <a class="btn btn-primary mb-2" href="/produksi/tambah" role="button">Tambah Data</a>
-                    <a class="btn btn-secondary mb-2" href="/produksi/cetak" role="button">Cetak Data</a>
+                    <a class="btn btn-primary mb-2" href="/kecamatan/tambah" role="button">Tambah Data</a>
                     <br>
                     <br>
                     <table id="example" class="table table-striped table-bordered datatables" style="width:100%">
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Tahun</th>
-                                <th>Kecamatan</th>
-                                <th>Luas Panen (ha)</th>
-                                <th>Produksi (ton)</th>
+                                <th>Kode</th>
+                                <th>Nama Kecamatan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!$produksi->isEmpty())
-                                @foreach ($produksi as $item)
+                            @if (!$kecamatan->isEmpty())
+                                @foreach ($kecamatan as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->tahun }}</td>
+                                    <td>{{ $item->kode }}</td>
                                     <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->luas_panen }}</td>
-                                    <td>{{ $item->hasil }}</td>
-                                    <td><a class="btn btn-warning" href="/produksi/edit/{{$item->id}}" role="button">Edit</a> <a class="btn btn-danger" href="/produksi/delete/{{$item->id}}" role="button">Delete</a></td>
+                                    <td><a class="btn btn-warning" href="/kecamatan/edit/{{$item->id_kecamatan}}" role="button">Edit</a> <a class="btn btn-danger" href="/kecamatan/delete/{{$item->id_kecamatan}}" role="button">Delete</a></td>
                                 </tr>
                                 @endforeach
                             @endif
@@ -51,10 +46,8 @@
                         <tfoot>
                             <tr>
                                 <th>No</th>
-                                <th>Tahun</th>
-                                <th>Kecamatan</th>
-                                <th>Luas Panen (ha)</th>
-                                <th>Produksi (ton)</th>
+                                <th>Kode</th>
+                                <th>Nama Kecamatan</th>
                                 <th>Aksi</th>
                             </tr>
                         </tfoot>

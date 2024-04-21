@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produksi;
+use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
@@ -10,18 +11,21 @@ use Illuminate\Support\Facades\Validator;
 class ProduksiController extends Controller
 {
     public function index(){
-        $produksi = Produksi::all();
+        $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->get();
         return view('produksi/produksi', ['produksi' => $produksi]);
     }
 
     public function tambah()  {
-        return view('produksi/produksiTambah');
+        $kecamatan = Kecamatan::all();
+        return view('produksi/produksiTambah', ['kecamatans'=>$kecamatan]);
     }
 
     public function tambahProses(Request $request) {
         $validator = Validator::make($request->all(),[
             'tahun' => 'required',
-            'kecamatan' => 'required',
+            'id_kecamatan' => 'required',
             'luas_panen' => 'required|numeric',
             'hasil' => 'required|numeric'
         ]);
@@ -32,7 +36,7 @@ class ProduksiController extends Controller
 
         Produksi::create([
             'tahun' => $request->tahun,
-            'kecamatan' => $request->kecamatan,
+            'id_kecamatan' => $request->id_kecamatan,
             'luas_panen' => $request->luas_panen,
             'hasil' => $request->hasil,
         ]);
@@ -42,12 +46,12 @@ class ProduksiController extends Controller
 
     public function edit($id)
     {
-        //$produksi = Produksi::all();
+        $kecamatan = Kecamatan::all();
         $produksi = Produksi::findOrFail($id);
         if (!$produksi) {
             return redirect()->route('/produksi')->with('error', 'Data Tidak Ditemukan!');
         }
-        return view('produksi.produksiEdit', ['produksi' => $produksi]);
+        return view('produksi.produksiEdit', ['kecamatans' => $kecamatan, 'produksi' => $produksi]);
     }
 
     public function editProses(Request $request, $id)
@@ -55,7 +59,7 @@ class ProduksiController extends Controller
         // Validasi input menggunakan Validator
         $validator = Validator::make($request->all(), [
             'tahun' => 'required',
-            'kecamatan' => 'required',
+            'id_kecamatan' => 'required',
             'luas_panen' => 'required|numeric',
             'hasil' => 'required|numeric'
         ]);
@@ -69,7 +73,7 @@ class ProduksiController extends Controller
 
             // Update atribut sesuai dengan permintaan
             $produksi->tahun = $request->tahun;
-            $produksi->kecamatan = $request->kecamatan;
+            $produksi->id_kecamatan = $request->id_kecamatan;
             $produksi->luas_panen = $request->luas_panen;
             $produksi->hasil = $request->hasil;
 

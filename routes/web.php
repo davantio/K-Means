@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
@@ -20,6 +21,13 @@ use App\Http\Controllers\AuthController;
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
 
+    Route::get('/kecamatan',[KecamatanController::class, 'index']);
+    Route::get('/kecamatan/tambah', [KecamatanController::class, 'tambah']);
+    Route::post('/kecamatan/tambah', [KecamatanController::class, 'tambahProses']);
+    Route::get('/kecamatan/edit/{id}', [KecamatanController::class, 'edit']);
+    Route::put('/kecamatan/update/{id}', [KecamatanController::class, 'editProses']);
+    Route::get('/kecamatan/delete/{id}', [KecamatanController::class, 'hapus']);
+    
     Route::get('/produksi',[ProduksiController::class, 'index']);
     Route::get('/produksi/tambah', [ProduksiController::class, 'tambah']);
     Route::post('/produksi/tambah', [ProduksiController::class, 'tambahProses']);
@@ -35,8 +43,9 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/admin/delete/{id}', [AdminController::class, 'hapus']);
 
     Route::get('/pemetaan', function () {
-        return view('error');
+        return view('map');
     });
+
     Route::get('/clustering', function () {
         return view('error');
     });

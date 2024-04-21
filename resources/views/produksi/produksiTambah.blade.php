@@ -18,9 +18,15 @@
                             value="{{ old('tahun') }}">
                         </div>
                         <div class="form-group">
-                            <label for="basicInput">Kecamatan</label>
-                            <input type="text" class="form-control" id="basicInput" name="kecamatan"
-                            value="{{ old('kecamatan') }}">
+                            <label for="helperText">Kecamatan</label>
+                            <div>
+                                <select class="choices form-select" name="id_kecamatan">
+                                    <option value="">Pilih Kecamatan</option> <!-- Menambahkan pilihan pertama -->
+                                    @foreach ($kecamatans as $kecamatan)
+                                        <option value="{{ $kecamatan->id_kecamatan }}">{{ $kecamatan->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -57,7 +63,7 @@
                 var errorMessage = errors;
                 var indonesianMessages = {
                     'The tahun field is required.': 'Kolom Tahun Harus Di Isi',
-                    'The kecamatan field is required.': 'Kolom Kecamatan Harus Di Isi',
+                    'The id_kecamatan field is required.': 'Kolom Kecamatan Harus Di Isi',
                     'The luas_panen field is required.': 'Kolom Luas Panen Harus Di Isi',
                     'The hasil field is required.': 'Kolom Hasil Produksi Harus Di Isi',
                     'The luas_panen field must be a number.' : 'Luas Panen Harus Angka',

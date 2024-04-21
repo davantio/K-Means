@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SI Pemetaan Jagung</title>
+    <title>SI Pengelompokan Jagung</title>
 
     <link rel="shortcut icon" href="{{ asset('dist/assets/compiled/svg/favicon.svg') }}" type="image/x-icon">
     <link rel="shortcut icon"
@@ -87,9 +87,16 @@
                             </a>
                         </li>
 
+                        <li class="sidebar-item {{ $currentPath == 'kecamatan' ? 'active' : '' }}">
+                            <a href="/kecamatan" class='sidebar-link'>
+                                <i class="bi bi-bookmark-fill"></i>
+                                <span>Data Kecamatan</span>
+                            </a>
+                        </li>
+
                         <li class="sidebar-item {{ $currentPath == 'produksi' ? 'active' : '' }}">
                             <a href="/produksi" class='sidebar-link'>
-                                <i class="bi bi-bookmark-fill"></i>
+                                <i class="bi bi-archive-fill"></i>
                                 <span>Data Produksi</span>
                             </a>
                         </li>
@@ -101,12 +108,12 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ $currentPath == 'pemetaan' ? 'active' : '' }}">
+                        <!-- <li class="sidebar-item {{ $currentPath == 'pemetaan' ? 'active' : '' }}">
                             <a href="/pemetaan" class='sidebar-link'>
                                 <i class="bi bi-map-fill"></i>
                                 <span>Pemetaan</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="sidebar-item {{ $currentPath == 'admin' ? 'active' : '' }}">
                             <a href="/admin" class='sidebar-link'>
@@ -125,7 +132,7 @@
                         <a href="#" class="burger-btn d-block">
                             <i class="bi bi-justify fs-3"></i>
                         </a>
-                        <span class="ms-3" style="font-size: 26px;">Sistem Informasi Pemetaan Pengelompokan Lahan Jagung</span>
+                        <span class="ms-3" style="font-size: 26px;">Sistem Informasi Pengelompokan Lahan Produksi Jagung</span>
                         
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

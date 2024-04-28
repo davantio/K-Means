@@ -17,4 +17,9 @@ class Kecamatan extends Model
     {
         return $this->hasMany(Produksi::class, 'id_kecamatan');
     }
+
+    public function clustering()
+    {
+        return $this->hasMany(Clustering::class, 'id_kecamatan');
+    }
 }

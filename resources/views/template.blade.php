@@ -108,12 +108,12 @@
                             </a>
                         </li>
 
-                        <!-- <li class="sidebar-item {{ $currentPath == 'pemetaan' ? 'active' : '' }}">
+                        <li class="sidebar-item {{ $currentPath == 'pemetaan' ? 'active' : '' }}">
                             <a href="/pemetaan" class='sidebar-link'>
                                 <i class="bi bi-map-fill"></i>
                                 <span>Pemetaan</span>
                             </a>
-                        </li> -->
+                        </li>
 
                         <li class="sidebar-item {{ $currentPath == 'admin' ? 'active' : '' }}">
                             <a href="/admin" class='sidebar-link'>

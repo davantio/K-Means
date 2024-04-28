@@ -74,22 +74,25 @@
         new DataTable('#example');
     </script>
     <script>
-        $('.btn-danger').on('click', function(e) {
-            e.preventDefault();
-            var href = $(this).attr('href');
+        $(document).ready(function() {
+            $('#example').on('click', '.btn-danger', function(e) {
+                e.preventDefault();
+                var href = $(this).attr('href');
 
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Yakin Hapus Data?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = href;
-                }
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = href;
+                    }
+                });
             });
         });
         @if (session('success'))

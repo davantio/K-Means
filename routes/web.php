@@ -5,6 +5,7 @@ use App\Http\Controllers\KecamatanController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ClusteringController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -19,7 +20,7 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::middleware(['auth:web'])->group(function () {
-    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 
     Route::get('/kecamatan',[KecamatanController::class, 'index']);
     Route::get('/kecamatan/tambah', [KecamatanController::class, 'tambah']);
@@ -28,6 +29,10 @@ Route::middleware(['auth:web'])->group(function () {
     Route::put('/kecamatan/update/{id}', [KecamatanController::class, 'editProses']);
     Route::get('/kecamatan/delete/{id}', [KecamatanController::class, 'hapus']);
     
+    Route::get('/clustering',[ClusteringController::class, 'index']);
+    Route::post('/clustering/tambah', [ClusteringController::class, 'kMeansClustering']);
+    Route::post('/clustering/delete', [ClusteringController::class, 'hapus']);
+
     Route::get('/produksi',[ProduksiController::class, 'index']);
     Route::get('/produksi/tambah', [ProduksiController::class, 'tambah']);
     Route::post('/produksi/tambah', [ProduksiController::class, 'tambahProses']);
@@ -45,15 +50,15 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/pemetaan', function () {
         return view('map');
     });
-
-    Route::get('/clustering', function () {
-        return view('error');
-    });
 });
 
 Route::get('/login', [AuthController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
+
+Route::get('/', function () {
+    return view('main.index');
+});
 
 
 // Route::get('/', function () {

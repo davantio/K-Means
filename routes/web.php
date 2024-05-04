@@ -47,9 +47,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::put('/admin/edit/{id}', [AdminController::class, 'editProses']);
     Route::get('/admin/delete/{id}', [AdminController::class, 'hapus']);
 
-    Route::get('/pemetaan', function () {
-        return view('map');
-    });
+    Route::get('/pemetaan',[ClusteringController::class, 'showMap']);
 });
 
 Route::get('/login', [AuthController::class, 'index']);
@@ -59,22 +57,3 @@ Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('/', function () {
     return view('main.index');
 });
-
-
-// Route::get('/', function () {
-//     return view('dashboard');
-// });
-
-// Route::get('/produksi',[ProduksiController::class, 'index']);
-// Route::get('/produksi/tambah', [ProduksiController::class, 'tambah']);
-// Route::post('/produksi/tambah', [ProduksiController::class, 'tambahProses']);
-// Route::get('/produksi/edit/{id}', [ProduksiController::class, 'edit']);
-// Route::put('/produksi/update/{id}', [ProduksiController::class, 'editProses']);
-// Route::get('/produksi/delete/{id}', [ProduksiController::class, 'hapus']);
-
-// Route::get('/admin', [AdminController::class, 'index']);
-// Route::get('/admin/tambah', [AdminController::class, 'tambah']);
-// Route::post('/admin/tambah', [AdminController::class, 'tambahProses']);
-// Route::get('/admin/edit/{id}', [AdminController::class, 'edit']);
-// Route::put('/admin/edit/{id}', [AdminController::class, 'editProses']);
-// Route::get('/admin/delete/{id}', [AdminController::class, 'hapus']);

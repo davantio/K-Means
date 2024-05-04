@@ -30,7 +30,7 @@
                     <div class="d-flex justify-content-center align-items-center">
                         <div class="row d-flex justify-content-center align-items-center">
                             <div class="logo">
-                                <a href="/">
+                                <a href="/dashboard">
                                     <img src="{{ asset('dist/assets/compiled/png/logo.png') }}" class="img-fluid"
                                         alt="Logo" style="width: 250px; height: auto;" srcset="">
                                 </a>
@@ -81,7 +81,7 @@
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item {{ $currentPath == '/' ? 'active' : '' }}">
-                            <a href="/" class='sidebar-link'>
+                            <a href="/dashboard" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
                                 <span>Dashboard</span>
                             </a>

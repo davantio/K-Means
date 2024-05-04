@@ -2,7 +2,6 @@
 
 @section('style')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 @endsection
 
 @section('title')
@@ -80,14 +79,6 @@
 
 @section('script')
 <script src="https://code.jquery.com/jquery-3.7.0.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" type="text/javascript"></script>
-  <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>
-<script>
-    new DataTable('#example');
-  </script>
-<!-- Need: Apexcharts -->
-<script src="{{ asset('dist/assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
-<script src="{{ asset('dist/assets/static/js/pages/dashboard.js') }}"></script>
 
 <!-- Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js" type="text/javascript"></script> <!-- Sertakan Chart.js -->

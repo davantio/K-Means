@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-use Phpml\Clustering\KMeans;
-use Phpml\Math\Distance\Euclidean;
+
 use App\Models\Produksi;
 use App\Models\Kecamatan;
 use App\Models\Clustering;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,10 +32,6 @@ class ClusteringController extends Controller
         return view('clustering/clustering', compact('clustering', 'totalCluster1', 'totalCluster2', 'totalCluster3'));
     }
 
-    // public function tambah()  {
-    //     return view('clustering/clusteringTambah');
-    // }
-
     public function kMeansClustering(Request $request)
     {
         //$tahun = $request->input('tahun');
@@ -46,8 +40,8 @@ class ClusteringController extends Controller
             // ->where('tahun', $tahun)
             ->get();
 
-        // Inisialisasi centroid awal secara acak
-        $k = 3; // Misalnya, kita ingin 3 klaster
+        // Inisialisasi jumlah klaster
+        $k = 3; 
 
         // Terima input centroid awal dari pengguna
         // $centroid1 = $request->input('centroid1');
@@ -63,10 +57,10 @@ class ClusteringController extends Controller
         //Centroid Random
         $centroids = $this->initializeCentroids($data, $k);
 
-        // Iterasi hingga konvergensi
+        // Iterasi hingga konvergensi/kesamaan cluster dengan iterasi sebelumnya
         $maxIterations = 100;
         for ($i = 0; $i < $maxIterations; $i++) {
-            // Hitung jarak dan assign klaster
+            // Hitung jarak dan menetapkan setiap titik data ke klaster yang paling dekat dengan centroid
             $clusters = $this->assignClusters($data, $centroids);
 
             // Perbarui centroid
@@ -80,7 +74,7 @@ class ClusteringController extends Controller
             $centroids = $newCentroids;
         }
 
-        // Keluarkan hasil klasterisasi
+        // Hasil klasterisasi
         //return response()->json($clusters);
 
         // Simpan hasil klasterisasi ke dalam database
@@ -92,7 +86,7 @@ class ClusteringController extends Controller
                     'tahun' => $point->tahun,
                     'luas_panen' => $point->luas_panen,
                     'hasil' => $point->hasil,
-                    'cluster' => $clusterIndex + 1, // Nomor klaster, misalnya
+                    'cluster' => $clusterIndex + 1, 
                 ]);
             }
         }
@@ -106,7 +100,6 @@ class ClusteringController extends Controller
         $centroids = [];
 
         // Tetapkan koordinat centroid secara manual
-        // Misalnya, Anda bisa menetapkan koordinat secara manual seperti berikut:
         $centroids[] = ['luas_panen' => $centroid1, 'hasil' => $centroid2];
         $centroids[] = ['luas_panen' => $centroid3, 'hasil' => $centroid4];
         $centroids[] = ['luas_panen' => $centroid5, 'hasil' => $centroid6];
@@ -116,9 +109,10 @@ class ClusteringController extends Controller
 
     private function initializeCentroids($data, $k)
     {
+        //Array yang akan menampung titik-titik centroid awal
         $centroids = [];
 
-        // Ambil titik-titik acak sebagai centroid awal
+        // Memilih secara acak beberapa indeks dari array untuk centroid awal sesuai dengan nilai k
         $randomKeys = array_rand($data->toArray(), $k);
         foreach ($randomKeys as $key) {
             $centroids[] = [
@@ -127,26 +121,33 @@ class ClusteringController extends Controller
             ];
         }
 
+        // Mengembalikan array $centroids yang berisi titik-titik centroid awal
         return $centroids;
     }
 
     private function assignClusters($data, $centroids)
     {
+        //Array yang menampung titik-titik data untuk setiap cluster
         $clusters = [];
 
         foreach ($data as $point) {
             $minDistance = PHP_INT_MAX;
             $closestCentroid = null;
 
+            //Iterasi dilakukan pada setiap titik data
             foreach ($centroids as $index => $centroid) {
+                //Jarak dihitung menggunakan rumus Euclidean Distance
                 $distance = sqrt(pow($point->luas_panen - $centroid['luas_panen'], 2) + pow($point->hasil - $centroid['hasil'], 2));
 
+                //Variabel $minDistance digunakan untuk menyimpan jarak terdekat yang ditemukan
+                //Variabel $closestCentroid digunakan untuk menyimpan indeks centroid yang paling dekat.
                 if ($distance < $minDistance) {
                     $minDistance = $distance;
                     $closestCentroid = $index;
                 }
             }
 
+            // Variabel $closestCentroid digunakan sebagai kunci untuk menyimpan titik data dalam array $clusters
             $clusters[$closestCentroid][] = $point;
         }
 
@@ -155,18 +156,22 @@ class ClusteringController extends Controller
 
     private function updateCentroids($data, $clusters, $k)
     {
+        //Array yang akan menampung nilai centroid baru
         $newCentroids = [];
 
+        //Melakukan iterasi pada setiap klaster dalam array $clusters
         foreach ($clusters as $cluster) {
             $luas_panenTotal = 0;
             $hasilTotal = 0;
 
+            //Menghitung nilai total luas panen dan hasil
             foreach ($cluster as $point) {
                 $luas_panenTotal += $point->luas_panen;
                 $hasilTotal += $point->hasil;
             }
 
             $clusterSize = count($cluster);
+            //Menghitung rata-rata luas panen dan hasil untuk klaster untuk centroid baru
             $newCentroids[] = [
                 'luas_panen' => $clusterSize > 0 ? $luas_panenTotal / $clusterSize : 0,
                 'hasil' => $clusterSize > 0 ? $hasilTotal / $clusterSize : 0,
@@ -197,5 +202,55 @@ class ClusteringController extends Controller
             return redirect('/clustering')->with('error', 'Gagal Menghapus Data Clustering');
         }
         
+    }
+
+    public function showMap(Request $request)
+    {
+        $availableYears = DB::table('cluster_results')
+        ->select('tahun')
+        ->distinct()
+        ->pluck('tahun');
+
+        //dd($availableYears);
+
+        // Ambil tahun yang dipilih oleh pengguna dari input form
+        $tahun = $request->input('tahun'); // Jika tidak ada tahun yang dipilih, gunakan tahun 2019 sebagai default
+
+        // Muat file GeoJSON yang sudah ada
+        $geojsonFile = file_get_contents(public_path('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan.geojson'));
+        $geojsonData = json_decode($geojsonFile);
+
+        //dd($geojsonData);
+        
+        // Pengambilan data klaster dari tabel cluster_results
+        $clusters = DB::table('cluster_results')
+            ->select('id_kecamatan', 'cluster')
+            ->where('tahun', $tahun)
+            ->distinct()
+            ->get();
+        
+        // Buat associative array untuk mencocokkan id_kecamatan dengan klaster
+        $clusterMap = [];
+        foreach ($clusters as $cluster) {
+            $clusterMap[$cluster->id_kecamatan] = $cluster->cluster;
+        }
+
+        // Tambahkan properti cluster ke data GeoJSON
+        foreach ($geojsonData->features as $feature) {
+            $id_kecamatan = $feature->properties->id_kecamatan;
+            if (isset($clusterMap[$id_kecamatan])) {
+                $feature->properties->cluster = $clusterMap[$id_kecamatan];
+            } else {
+                // Handle jika id_kecamatan tidak ditemukan di tabel cluster_results
+                $feature->properties->cluster = null;
+            }
+        }
+
+        //dd($geojsonData);
+
+        // Convert data GeoJSON kembali ke format JSON
+        $modifiedGeojsonString = json_encode($geojsonData);
+
+        return view('map', ['geojson' => $modifiedGeojsonString, 'availableYears' => $availableYears]);
     }
 }

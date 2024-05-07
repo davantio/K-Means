@@ -7,6 +7,8 @@ use App\Models\Kecamatan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use PDF;
 
 class ProduksiController extends Controller
 {
@@ -14,7 +16,12 @@ class ProduksiController extends Controller
         $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
             ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
             ->get();
-        return view('produksi/produksi', ['produksi' => $produksi]);
+
+        $availableYears = Produksi::select('tahun')
+            ->distinct()
+            ->pluck('tahun');
+            
+        return view('produksi/produksi', ['produksi' => $produksi, 'availableYears' => $availableYears]);
     }
 
     public function tambah()  {
@@ -24,7 +31,7 @@ class ProduksiController extends Controller
 
     public function tambahProses(Request $request) {
         $validator = Validator::make($request->all(),[
-            'tahun' => 'required',
+            'tahun' => 'required|numeric',
             'id_kecamatan' => 'required',
             'luas_panen' => 'required|numeric',
             'hasil' => 'required|numeric'
@@ -99,6 +106,48 @@ class ProduksiController extends Controller
             // Tangani pengecualian umum (contoh: gagal menghapus)
             return redirect('/produksi')->with('error', 'Gagal Menghapus Data Produksi');
         }
+    }
+
+    public function filterProses(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'tahun' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return redirect('/produksi')->withErrors($validator)->withInput();
+        }
+
+        $tahun = $request->input('tahun');
+
+        if($tahun == 0){
+            $produksi = DB::table('produksi')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan');
+            $produksi = $produksi->get();
+        }else{
+            $produksi = DB::table('produksi')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->where('produksi.tahun', $tahun);
+            $produksi = $produksi->get();
+        }
+
+        $availableYears = Produksi::select('tahun')
+            ->distinct()
+            ->pluck('tahun');
         
+        return view('produksi.produksi', ['produksi' => $produksi, 'availableYears' => $availableYears]);
+    }
+
+    public function exportPDF(Request $request)
+    {
+        $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->get();
+
+        // Buat PDF menggunakan DOMPDF
+        $pdf = PDF::loadView('produksi.produksi_pdf', compact('produksi'));
+
+        // Unduh file PDF
+        // return $pdf->download('Laporan_' . $tahun .  '.pdf');
+        return $pdf->stream();
     }
 }

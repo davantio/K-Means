@@ -6,6 +6,7 @@ use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ClusteringController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -31,7 +32,6 @@ Route::middleware(['auth:web'])->group(function () {
     
     Route::get('/clustering',[ClusteringController::class, 'index']);
     Route::post('/clustering/tambah', [ClusteringController::class, 'kMeansClustering']);
-    Route::post('/clustering/delete', [ClusteringController::class, 'hapus']);
 
     Route::get('/produksi',[ProduksiController::class, 'index']);
     Route::get('/produksi/tambah', [ProduksiController::class, 'tambah']);
@@ -39,6 +39,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/produksi/edit/{id}', [ProduksiController::class, 'edit']);
     Route::put('/produksi/update/{id}', [ProduksiController::class, 'editProses']);
     Route::get('/produksi/delete/{id}', [ProduksiController::class, 'hapus']);
+    Route::post('/produksi/filter', [ProduksiController::class, 'filterProses']);
+    Route::get('/produksi/export-pdf', [ProduksiController::class, 'exportPDF']);
 
     Route::get('/admin', [AdminController::class, 'index']);
     Route::get('/admin/tambah', [AdminController::class, 'tambah']);
@@ -50,10 +52,9 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/pemetaan',[ClusteringController::class, 'showMap']);
 });
 
+Route::get('/', [MainController::class, 'index']);
+Route::get('/main/pemetaan',[MainController::class, 'showMap']);
+
 Route::get('/login', [AuthController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/logout', [AuthController::class, 'logout']);
-
-Route::get('/', function () {
-    return view('main.index');
-});

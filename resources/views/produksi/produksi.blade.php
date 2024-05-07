@@ -18,11 +18,33 @@
             </h5>
         </div>
             <div class="card-body">
+                <a class="btn btn-primary mb-2" href="/produksi/tambah" role="button">Tambah Data</a>
+                <a class="btn btn-danger mb-2" href="/produksi/export-pdf" role="button" target="_blank">
+                    <i class="bi bi-file-pdf"></i> Export PDF</a>
+                <br>
+                <br>
+                <form action="{{ url('/produksi/filter') }}" method="POST">
+                    @csrf
+                    @method('POST')
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="helperText">Filter per Tahun</label>
+                                <div>
+                                    <select id="tahunSelect" class="choices form-select" name="tahun">
+                                        <option value="">Pilih Tahun</option> 
+                                        <option value="0">Semua</option> 
+                                        @foreach ($availableYears as $year)
+                                            <option value="{{ $year }}">{{ $year }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <button class="btn btn-secondary" type="submit" name="action" value="filter">Filter</button> -->
+                </form>
                 <div class="table-responsive">
-                    <a class="btn btn-primary mb-2" href="/produksi/tambah" role="button">Tambah Data</a>
-                    <a class="btn btn-secondary mb-2" href="/produksi/cetak" role="button">Cetak Data</a>
-                    <br>
-                    <br>
                     <table id="example" class="table table-striped table-bordered datatables" style="width:100%">
                         <thead>
                             <tr>
@@ -72,6 +94,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         new DataTable('#example');
+    </script>
+    <script>
+    document.getElementById('tahunSelect').addEventListener('change', function() {
+        // Submit form saat terjadi perubahan pada pilihan tahun
+        this.form.submit();
+    });
     </script>
     <script>
         $(document).ready(function() {

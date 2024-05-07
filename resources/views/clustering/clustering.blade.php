@@ -18,16 +18,18 @@
             </h5>
         </div>
             <div class="card-body">
+                <div class="alert alert-{{ $notificationType }}">
+                    @if($notificationType === 'success')
+                        <i class="bi bi-check-circle"></i> {{ $notificationMessage }}
+                    @else
+                        <i class="bi bi-exclamation-triangle"></i> {{ $notificationMessage }}
+                    @endif
+                </div>
                 <div class="table-responsive">
-                    <form action="{{url('/clustering/tambah')}}" method="post">
+                    <form id="add" action="{{url('/clustering/tambah')}}" method="post">
                         @csrf
                         @method('post')
                         <button type="submit" class="btn btn-primary mb-2">Proses Clustering Data</button>
-                    </form>
-                    <form id="delete" action="{{url('/clustering/delete')}}" method="post">
-                        @csrf
-                        @method('post')
-                        <button type="submit" class="btn btn-danger mb-2">Hapus Semua Data</button>
                     </form>
                     <br>
                     <table id="example" class="table table-striped table-bordered datatables" style="width:100%">
@@ -36,8 +38,8 @@
                                 <th>No</th>
                                 <th>Tahun</th>
                                 <th>Kecamatan</th>
-                                <th>Luas Panen</th>
-                                <th>Hasil</th>
+                                <th>Luas Panen (ha)</th>
+                                <th>Produksi (ton)</th>
                                 <th>Klaster</th>
                             </tr>
                         </thead>
@@ -60,8 +62,8 @@
                                 <th>No</th>
                                 <th>Tahun</th>
                                 <th>Kecamatan</th>
-                                <th>Luas Panen</th>
-                                <th>Hasil</th>
+                                <th>Luas Panen (ha)</th>
+                                <th>Produksi (ton)</th>
                                 <th>Klaster</th>
                             </tr>
                         </tfoot>
@@ -103,18 +105,18 @@
         new DataTable('#example');
     </script>
     <script>
-        // Fungsi untuk menampilkan notifikasi konfirmasi saat tombol hapus diklik
-        $('#delete').on('submit', function (e) {
+        // Fungsi untuk menampilkan notifikasi konfirmasi saat tombol ptoses diklik
+        $('#add').on('submit', function (e) {
             e.preventDefault(); // Mencegah formulir dikirim secara langsung
 
             Swal.fire({
                 title: 'Apakah Anda yakin?',
-                text: "Data yang dihapus tidak dapat dikembalikan!",
+                text: "Pastikan semua data sudah benar!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, hapus!',
+                confirmButtonText: 'Ya, Proses Clustering!',
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {

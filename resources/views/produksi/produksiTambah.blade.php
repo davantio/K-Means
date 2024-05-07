@@ -14,7 +14,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="basicInput">Tahun</label>
-                            <input type="text" class="form-control" id="basicInput" name="tahun"
+                            <input type="number" class="form-control" id="tahun" name="tahun"
                             value="{{ old('tahun') }}">
                         </div>
                         <div class="form-group">
@@ -32,13 +32,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="basicInput">Luas Panen (ha)</label>
-                            <input type="text" class="form-control" id="basicInput" name="luas_panen"
-                            value="{{ old('luas_panen') }}">
+                            <input type="number" class="form-control" id="luas_panen" name="luas_panen"
+                            value="{{ old('luas_panen') }}" step="any">
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Hasil Produksi (ton)</label>
-                            <input type="text" class="form-control" id="basicInput" name="hasil"
-                            value="{{ old('hasil') }}">
+                            <input type="number" class="form-control" id="hasil" name="hasil"
+                            value="{{ old('hasil') }}" step="any">
                         </div>
                     </div>
                 </div>
@@ -63,10 +63,11 @@
                 var errorMessage = errors;
                 var indonesianMessages = {
                     'The tahun field is required.': 'Kolom Tahun Harus Di Isi',
-                    'The id_kecamatan field is required.': 'Kolom Kecamatan Harus Di Isi',
-                    'The luas_panen field is required.': 'Kolom Luas Panen Harus Di Isi',
+                    'The tahun field must be a number.': 'Kolom Tahun Harus Angka',
+                    'The id kecamatan field is required.': 'Kolom Kecamatan Harus Di Isi',
+                    'The luas panen field is required.': 'Kolom Luas Panen Harus Di Isi',
                     'The hasil field is required.': 'Kolom Hasil Produksi Harus Di Isi',
-                    'The luas_panen field must be a number.' : 'Luas Panen Harus Angka',
+                    'The luas panen field must be a number.' : 'Luas Panen Harus Angka',
                     'The hasil field must be a number.' : 'Hasil Produksi Harus Angka'
                 };
                 for (var key in indonesianMessages) {

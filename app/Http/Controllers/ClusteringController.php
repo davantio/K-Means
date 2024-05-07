@@ -15,6 +15,17 @@ class ClusteringController extends Controller
         ->leftJoin('kecamatans', 'cluster_results.id_kecamatan', '=', 'kecamatans.id_kecamatan')
         ->get();
 
+        // Menghitung jumlah total data dan data yang sudah di-cluster
+        $totalData = Produksi::count();
+        $totalClusteredData = Clustering::distinct('hasil')->count('hasil');
+
+        // Hitung jumlah data yang belum diproses
+        $unprocessedDataCount = $totalData - $totalClusteredData;
+
+        // Tentukan jenis notifikasi berdasarkan status data
+        $notificationType = ($unprocessedDataCount > 0) ? 'warning' : 'success';
+        $notificationMessage = ($unprocessedDataCount > 0) ? 'Ada data yang belum diproses.' : 'Semua data sudah diproses.';
+
         $totalCluster1 = 0;
         $totalCluster2 = 0;
         $totalCluster3 = 0;
@@ -29,7 +40,7 @@ class ClusteringController extends Controller
             }
         }
 
-        return view('clustering/clustering', compact('clustering', 'totalCluster1', 'totalCluster2', 'totalCluster3'));
+        return view('clustering/clustering', compact('clustering', 'notificationType', 'notificationMessage', 'totalCluster1', 'totalCluster2', 'totalCluster3'));
     }
 
     public function kMeansClustering(Request $request)
@@ -42,17 +53,6 @@ class ClusteringController extends Controller
 
         // Inisialisasi jumlah klaster
         $k = 3; 
-
-        // Terima input centroid awal dari pengguna
-        // $centroid1 = $request->input('centroid1');
-        // $centroid2 = $request->input('centroid2');
-        // $centroid3 = $request->input('centroid3');
-        // $centroid4 = $request->input('centroid4');
-        // $centroid5 = $request->input('centroid5');
-        // $centroid6 = $request->input('centroid6');
-
-        //Centroid Manual
-        //$centroids = $this->initializeCentroidsManually($centroid1, $centroid2, $centroid3, $centroid4, $centroid5, $centroid6);
 
         //Centroid Random
         $centroids = $this->initializeCentroids($data, $k);
@@ -80,31 +80,29 @@ class ClusteringController extends Controller
         // Simpan hasil klasterisasi ke dalam database
         foreach ($clusters as $clusterIndex => $cluster) {
             foreach ($cluster as $point) {
-                // Simpan data ke dalam tabel cluster_results
-                Clustering::create([
+                // Memeriksa apakah data sudah ada dalam tabel cluster_results
+                $existingData = Clustering::where([
                     'id_kecamatan' => $point->id_kecamatan,
                     'tahun' => $point->tahun,
                     'luas_panen' => $point->luas_panen,
                     'hasil' => $point->hasil,
-                    'cluster' => $clusterIndex + 1, 
-                ]);
+                ])->first();
+
+                // Simpan data ke dalam tabel cluster_results
+                if (!$existingData) {
+                    Clustering::create([
+                        'id_kecamatan' => $point->id_kecamatan,
+                        'tahun' => $point->tahun,
+                        'luas_panen' => $point->luas_panen,
+                        'hasil' => $point->hasil,
+                        'cluster' => $clusterIndex + 1, 
+                    ]);
+                }
             }
         }
 
         // Kirim data hasil clustering ke view
-        return redirect('/clustering')->with('success', "Berhasil Memproses Data Clustering");
-    }
-
-    private function initializeCentroidsManually($centroid1, $centroid2, $centroid3, $centroid4, $centroid5, $centroid6)
-    {
-        $centroids = [];
-
-        // Tetapkan koordinat centroid secara manual
-        $centroids[] = ['luas_panen' => $centroid1, 'hasil' => $centroid2];
-        $centroids[] = ['luas_panen' => $centroid3, 'hasil' => $centroid4];
-        $centroids[] = ['luas_panen' => $centroid5, 'hasil' => $centroid6];
-
-        return $centroids;
+        return redirect('/clustering')->with('success', "Berhasil Memproses Clustering");
     }
 
     private function initializeCentroids($data, $k)
@@ -186,22 +184,6 @@ class ClusteringController extends Controller
         }
 
         return $newCentroids;
-    }
-
-    public function hapus()  {
-        try {
-            // Hapus semua data dari tabel cluster_results
-            Clustering::truncate();
-
-            return redirect('/clustering')->with('success', 'Data Clustering Berhasil Dihapus!');
-        } catch (ModelNotFoundException $e) {
-            // Tangani pengecualian jika ruangan dengan ID tertentu tidak ditemukan
-            return redirect('/clustering')->with('error', 'Data Clustering Tidak Ditemukan');
-        } catch (\Exception $e) {
-            // Tangani pengecualian umum (contoh: gagal menghapus)
-            return redirect('/clustering')->with('error', 'Gagal Menghapus Data Clustering');
-        }
-        
     }
 
     public function showMap(Request $request)

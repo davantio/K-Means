@@ -23,8 +23,8 @@ class ClusteringController extends Controller
         $unprocessedDataCount = $totalData - $totalClusteredData;
 
         // Tentukan jenis notifikasi berdasarkan status data
-        $notificationType = ($unprocessedDataCount > 0) ? 'warning' : 'success';
-        $notificationMessage = ($unprocessedDataCount > 0) ? 'Ada data yang belum diproses.' : 'Semua data sudah diproses.';
+        $notificationType = ($unprocessedDataCount < 0) ? 'warning' : 'success';
+        $notificationMessage = ($unprocessedDataCount < 0) ? 'Terdapat Perubahan Data, Silahkan Lakukan Clustering Ulang.' : 'Semua data sudah diproses.';
 
         $totalCluster1 = 0;
         $totalCluster2 = 0;

@@ -25,7 +25,9 @@ class ProduksiController extends Controller
     }
 
     public function tambah()  {
-        $kecamatan = Kecamatan::all();
+        $kecamatan = Kecamatan::select('kecamatans.*')
+            ->Orderby('nama', 'asc')
+            ->get();
         return view('produksi/produksiTambah', ['kecamatans'=>$kecamatan]);
     }
 
@@ -53,7 +55,9 @@ class ProduksiController extends Controller
 
     public function edit($id)
     {
-        $kecamatan = Kecamatan::all();
+        $kecamatan = Kecamatan::select('kecamatans.*')
+            ->Orderby('nama', 'asc')
+            ->get();
         $produksi = Produksi::findOrFail($id);
         if (!$produksi) {
             return redirect()->route('/produksi')->with('error', 'Data Tidak Ditemukan!');

@@ -63,32 +63,84 @@
                 </nav>
             </header>
             <div class="content-wrapper container">
-             
-<br>
-<!-- <div class="page-heading">
-    <h3>Horizontal Layout</h3>
-</div> -->
-<div class="page-content">
-    <section class="row">
-        <div class="col-12 col-lg-12">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header" style="text-align: center;">
-                            <h4 style="font-size: 36px;">DINAS KETAHANAN PANGAN DAN PERTANIAN</h4>
-                            <h4 style="font-size: 36px;">KABUPATEN PASURUAN</h4>
-                        </div>
-                        <br><br>
-                        <div class="card-body" style="text-align: center;">
-                            <h3 style="font-size: 24px;">SISTEM INFORMASI GEOGRAFIS PEMETAAN LAHAN PRODUKSI JAGUNG</h4>
-                            <h3 style="font-size: 24px;">DI KABUPATEN PASURUAN</h4>
+
+            <div class="page-heading">
+                <h3>Luas Panen dan Hasil Produksi Jagung</h3>
+            </div>
+            <div class="page-content">
+                <section class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">
+                                            Tabel Luas Panen dan Hasil Produksi Jagung tiap Kecamatan
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="{{ url('/main/produksi') }}" method="GET">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label for="helperText">Filter per Tahun</label>
+                                                        <div>
+                                                            <select id="tahunSelect" class="choices form-select" name="tahun">
+                                                                <option value="">Pilih Tahun</option> 
+                                                                <option value="0">Semua</option> 
+                                                                @foreach ($availableYears as $year)
+                                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a class="btn btn-danger mb-2" href="/produksi/export-pdf" role="button" target="_blank">
+                                                <i class="bi bi-file-pdf"></i> Export PDF</a>
+                                            <!-- <button class="btn btn-secondary" type="submit" name="action" value="filter">Filter</button> -->
+                                        </form>
+                                        <div class="table-responsive">
+                                            <table id="example" class="table table-striped table-bordered datatables" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Tahun</th>
+                                                        <th>Kecamatan</th>
+                                                        <th>Luas Panen (ha)</th>
+                                                        <th>Produksi (ton)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (!$produksi->isEmpty())
+                                                        @foreach ($produksi as $item)
+                                                        <tr>
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $item->tahun }}</td>
+                                                            <td>{{ $item->nama }}</td>
+                                                            <td>{{ $item->luas_panen }}</td>
+                                                            <td>{{ $item->hasil }}</td>
+                                                        </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>Tahun</th>
+                                                        <th>Kecamatan</th>
+                                                        <th>Luas Panen (ha)</th>
+                                                        <th>Produksi (ton)</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
+                </section>
             </div>
 
             <footer>
@@ -111,6 +163,20 @@
     <script src="{{ asset('dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     
     <script src="{{ asset('dist/assets/compiled/js/app.js') }}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        new DataTable('#example');
+    </script>
+    <script>
+    document.getElementById('tahunSelect').addEventListener('change', function() {
+        // Submit form saat terjadi perubahan pada pilihan tahun
+        this.form.submit();
+    });
+    </script>
 
 </body>
 

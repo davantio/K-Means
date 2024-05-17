@@ -31,7 +31,15 @@
     <div id="app">
         <div id="main" class="layout-horizontal">
             <header class="mb-5">
-                <nav class="main-navbar" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 999;">
+                <div class="header-top">
+                    <div class="container d-flex justify-content-end">
+                        <!-- Burger button responsive -->
+                        <a href="#" class="burger-btn d-block d-xl-none">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                    </div>
+                </div>
+                <nav class="main-navbar">
                     <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
                         <div class="logo">
                             <a href="/">
@@ -42,15 +50,8 @@
                         <ul style="display: flex;">
                             <li
                                 class="menu-item  ">
-                                <a href="/dataproduksi" class='menu-link'>
+                                <a href="/main/produksi" class='menu-link'>
                                     <span> Data Produksi</span>
-                                </a>
-                            </li>
-
-                            <li
-                                class="menu-item  ">
-                                <a href="index.html" class='menu-link'>
-                                    <span> Clustering</span>
                                 </a>
                             </li>
 
@@ -72,8 +73,7 @@
                 </nav>
             </header>
             <div class="content-wrapper container">
-             
-            <br><br><br>
+
             <div class="page-heading">
                 <h3>Pemetaan Hasil Clustering</h3>
             </div>
@@ -129,6 +129,7 @@
     </div>
 
 <script src="{{ asset('dist/assets/static/js/components/dark.js') }}"></script>
+<script src="{{ asset('dist/assets/static/js/pages/horizontal-layout.js') }}"></script>
 <script src="{{ asset('dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     
 <script src="{{ asset('dist/assets/compiled/js/app.js') }}"></script>

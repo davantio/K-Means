@@ -54,6 +54,7 @@ Route::middleware(['auth:web'])->group(function () {
 
 Route::get('/', [MainController::class, 'index']);
 Route::get('/main/pemetaan',[MainController::class, 'showMap']);
+Route::get('/main/produksi',[MainController::class, 'showProduksi']);
 
 Route::get('/login', [AuthController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');

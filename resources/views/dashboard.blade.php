@@ -13,7 +13,7 @@
   <div class="hero bg-primary text-white p-5 rounded">
     <div class="hero-inner">
       <h2>Selamat Datang {{ $nama }}!</h2>
-      <p class="lead">Dashboard Sistem Informasi Pemetaan Pengelompokan Lahan Jagung</p>
+      <p class="lead">Dashboard Sistem Informasi Pengelompokan Lahan Produksi Jagung</p>
     </div>
   </div>
   <br>

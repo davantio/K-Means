@@ -85,10 +85,22 @@
                 });
             @endif
             @if (session('errors'))
+                var errors = @json(session('errors')->all());
+                var errorMessage = errors;
+                var indonesianMessages = {
+                    'The email field is required.': 'Kolom Email Harus Di Isi',
+                    'The password field is required.': 'Kolom Password Harus Di Isi'
+                };
+                for (var key in indonesianMessages) {
+                    if (indonesianMessages.hasOwnProperty(key) && errorMessage.includes(key)) {
+                        errorMessage = indonesianMessages[key];
+                        break;
+                    }
+                }
                 Swal.fire({
                     icon: 'error',
-                    title: 'Gagal',
-                    text: 'Login Gagal',
+                    title: 'Error',
+                    text: errorMessage,
                 });
             @endif
         });

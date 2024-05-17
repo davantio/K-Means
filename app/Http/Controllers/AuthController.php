@@ -36,7 +36,7 @@ class AuthController extends Controller
         }
 
         return redirect('/login')->withErrors([
-            'email' => 'Kombinasi salah',
+            'email' => 'Email atau Password Salah!',
         ])->withInput($request->only('email'));
     }
 

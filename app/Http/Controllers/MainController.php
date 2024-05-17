@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Clustering;
+use App\Models\Produksi;
 
 class MainController extends Controller
 {
@@ -60,5 +61,26 @@ class MainController extends Controller
         $modifiedGeojsonString = json_encode($geojsonData);
 
         return view('main.map', ['geojson' => $modifiedGeojsonString, 'availableYears' => $availableYears]);
+    }
+
+    public function showProduksi(Request $request){
+        $tahun = $request->input('tahun');
+
+        if($tahun == 0){
+            $produksi = DB::table('produksi')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan');
+            $produksi = $produksi->get();
+        }else{
+            $produksi = DB::table('produksi')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->where('produksi.tahun', $tahun);
+            $produksi = $produksi->get();
+        }
+
+        $availableYears = Produksi::select('tahun')
+            ->distinct()
+            ->pluck('tahun');
+        
+        return view('main.produksi', ['produksi' => $produksi, 'availableYears' => $availableYears]);
     }
 }

@@ -15,16 +15,13 @@ class ClusteringController extends Controller
         ->leftJoin('kecamatans', 'cluster_results.id_kecamatan', '=', 'kecamatans.id_kecamatan')
         ->get();
 
-        // Menghitung jumlah total data dan data yang sudah di-cluster
-        $totalData = Produksi::count();
-        $totalClusteredData = Clustering::distinct('hasil')->count('hasil');
-
-        // Hitung jumlah data yang belum diproses
-        $unprocessedDataCount = $totalData - $totalClusteredData;
-
-        // Tentukan jenis notifikasi berdasarkan status data
-        $notificationType = ($unprocessedDataCount < 0) ? 'warning' : 'success';
-        $notificationMessage = ($unprocessedDataCount < 0) ? 'Terdapat Perubahan Data, Silahkan Lakukan Clustering Ulang.' : 'Semua data sudah diproses.';
+        if (DB::table('reclustering_status')->where('id', 1)->first()->needs_reclustering) {
+            $notificationType = 'warning';
+            $notificationMessage = 'Terdapat Perubahan Data, Silahkan Lakukan Proses Clustering.';
+        }else{
+            $notificationType = 'success';
+            $notificationMessage = 'Semua data sudah diproses.';
+        }
 
         $totalCluster1 = 0;
         $totalCluster2 = 0;
@@ -46,6 +43,13 @@ class ClusteringController extends Controller
     public function kMeansClustering(Request $request)
     {
         //$tahun = $request->input('tahun');
+
+        // Periksa apakah clustering ulang diperlukan
+        $status = DB::table('reclustering_status')->where('id', 1)->first();
+
+        if (!$status || !$status->needs_reclustering) {
+            return redirect('/clustering')->with('info', "Tidak ada perubahan pada data. Clustering tidak diperlukan.");
+        }
 
         $data = Produksi::select('luas_panen', 'hasil', 'id_kecamatan', 'tahun')
             // ->where('tahun', $tahun)
@@ -74,32 +78,57 @@ class ClusteringController extends Controller
             $centroids = $newCentroids;
         }
 
+        // Jenis perubahan data: new, update, delete
+        $changeType = $status->type;
+
+        if ($changeType === 'delete' || $changeType === 'update') {
+            // Hapus data clustering yang lama
+            Clustering::truncate();
+        }
+
         // Hasil klasterisasi
         //return response()->json($clusters);
 
-        // Simpan hasil klasterisasi ke dalam database
-        foreach ($clusters as $clusterIndex => $cluster) {
-            foreach ($cluster as $point) {
-                // Memeriksa apakah data sudah ada dalam tabel cluster_results
-                $existingData = Clustering::where([
-                    'id_kecamatan' => $point->id_kecamatan,
-                    'tahun' => $point->tahun,
-                    'luas_panen' => $point->luas_panen,
-                    'hasil' => $point->hasil,
-                ])->first();
+        if ($changeType === 'new') {
+            // Simpan hasil klasterisasi hanya untuk data baru
+            foreach ($clusters as $clusterIndex => $cluster) {
+                foreach ($cluster as $point) {
+                    // Memeriksa apakah data sudah ada dalam tabel cluster_results
+                    $existingData = Clustering::where([
+                        'id_kecamatan' => $point->id_kecamatan,
+                        'tahun' => $point->tahun,
+                        'luas_panen' => $point->luas_panen,
+                        'hasil' => $point->hasil,
+                    ])->first();
 
-                // Simpan data ke dalam tabel cluster_results
-                if (!$existingData) {
+                    if (!$existingData) {
+                        Clustering::create([
+                            'id_kecamatan' => $point->id_kecamatan,
+                            'tahun' => $point->tahun,
+                            'luas_panen' => $point->luas_panen,
+                            'hasil' => $point->hasil,
+                            'cluster' => $clusterIndex + 1,
+                        ]);
+                    }
+                }
+            }
+        } else {
+            // Simpan hasil klasterisasi untuk semua data
+            foreach ($clusters as $clusterIndex => $cluster) {
+                foreach ($cluster as $point) {
                     Clustering::create([
                         'id_kecamatan' => $point->id_kecamatan,
                         'tahun' => $point->tahun,
                         'luas_panen' => $point->luas_panen,
                         'hasil' => $point->hasil,
-                        'cluster' => $clusterIndex + 1, 
+                        'cluster' => $clusterIndex + 1,
                     ]);
                 }
             }
         }
+
+        // Reset status clustering
+        DB::table('reclustering_status')->update(['needs_reclustering' => false, 'type' => null]);
 
         // Kirim data hasil clustering ke view
         return redirect('/clustering')->with('success', "Berhasil Memproses Clustering");

@@ -83,4 +83,18 @@ class MainController extends Controller
         
         return view('main.produksi', ['produksi' => $produksi, 'availableYears' => $availableYears]);
     }
+
+    public function exportPDF(Request $request)
+    {
+        $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->get();
+
+        // Buat PDF menggunakan DOMPDF
+        $pdf = PDF::loadView('produksi.produksi_pdf', compact('produksi'));
+
+        // Unduh file PDF
+        return $pdf->download('Laporan' . '.pdf');
+        //return $pdf->stream();
+    }
 }

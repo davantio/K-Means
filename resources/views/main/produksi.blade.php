@@ -96,7 +96,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a class="btn btn-danger mb-2" href="/produksi/export-pdf" role="button" target="_blank">
+                                            <a class="btn btn-danger mb-2" href="/main/export-pdf" role="button" target="_blank">
                                                 <i class="bi bi-file-pdf"></i> Export PDF</a>
                                             <!-- <button class="btn btn-secondary" type="submit" name="action" value="filter">Filter</button> -->
                                         </form>

@@ -151,7 +151,7 @@ class ProduksiController extends Controller
         $pdf = PDF::loadView('produksi.produksi_pdf', compact('produksi'));
 
         // Unduh file PDF
-        // return $pdf->download('Laporan_' . $tahun .  '.pdf');
-        return $pdf->stream();
+        return $pdf->download('Laporan' . '.pdf');
+        //return $pdf->stream();
     }
 }

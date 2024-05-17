@@ -131,5 +131,12 @@
                 text: '{{ session('success') }}',
             });
         @endif
+        @if (session('info'))
+            Swal.fire({
+                icon: 'info',
+                title: 'Informasi',
+                text: '{{ session('info') }}',
+            });
+        @endif
     </script>
 @endsection

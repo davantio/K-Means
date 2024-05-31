@@ -85,6 +85,7 @@
             onEachFeature: function(feature, layer) {
             // Tambahkan popup saat mouse hover
             var namaKecamatan = feature.properties.nama;
+            var hasilProduksi = feature.properties.hasil;
             var cluster = feature.properties.cluster;
             var produktivitas;
             if (cluster === 1) {
@@ -96,7 +97,7 @@
             } else {
                 produktivitas = "Tidak Diketahui";
             }
-            layer.bindPopup('<b>Nama Kecamatan:</b> ' + namaKecamatan + '<br><b>Klaster:</b> ' + cluster + '<br><b>Produktivitas:</b> ' + produktivitas);
+            layer.bindPopup('<b>Nama Kecamatan:</b> ' + namaKecamatan + '<br><b>Hasil Produksi:</b> ' + hasilProduksi + '<br><b>Klaster:</b> ' + cluster + '<br><b>Produktivitas:</b> ' + produktivitas);
         }
         }).addTo(map);
 

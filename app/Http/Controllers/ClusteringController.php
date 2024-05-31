@@ -228,14 +228,14 @@ class ClusteringController extends Controller
         $tahun = $request->input('tahun'); // Jika tidak ada tahun yang dipilih, gunakan tahun 2019 sebagai default
 
         // Muat file GeoJSON yang sudah ada
-        $geojsonFile = file_get_contents(public_path('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan.geojson'));
+        $geojsonFile = file_get_contents(public_path('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan_New.geojson'));
         $geojsonData = json_decode($geojsonFile);
 
         //dd($geojsonData);
         
         // Pengambilan data klaster dari tabel cluster_results
         $clusters = DB::table('cluster_results')
-            ->select('id_kecamatan', 'cluster')
+            ->select('id_kecamatan', 'hasil', 'cluster')
             ->where('tahun', $tahun)
             ->distinct()
             ->get();
@@ -243,16 +243,21 @@ class ClusteringController extends Controller
         // Buat associative array untuk mencocokkan id_kecamatan dengan klaster
         $clusterMap = [];
         foreach ($clusters as $cluster) {
-            $clusterMap[$cluster->id_kecamatan] = $cluster->cluster;
+            $clusterMap[$cluster->id_kecamatan] = [
+                'hasil' => $cluster->hasil,
+                'cluster' => $cluster->cluster
+            ];
         }
 
         // Tambahkan properti cluster ke data GeoJSON
         foreach ($geojsonData->features as $feature) {
             $id_kecamatan = $feature->properties->id_kecamatan;
             if (isset($clusterMap[$id_kecamatan])) {
-                $feature->properties->cluster = $clusterMap[$id_kecamatan];
+                $feature->properties->hasil = $clusterMap[$id_kecamatan]['hasil'];
+                $feature->properties->cluster = $clusterMap[$id_kecamatan]['cluster'];
             } else {
                 // Handle jika id_kecamatan tidak ditemukan di tabel cluster_results
+                $feature->properties->hasil = null;
                 $feature->properties->cluster = null;
             }
         }

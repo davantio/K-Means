@@ -52,7 +52,7 @@ class MainController extends Controller
             $id_kecamatan = $feature->properties->id_kecamatan;
             if (isset($clusterMap[$id_kecamatan])) {
                 $feature->properties->hasil = $clusterMap[$id_kecamatan]['hasil'];
-                $feature->properties->cluster = $clusterMap[$id_kecamatan];
+                $feature->properties->cluster = $clusterMap[$id_kecamatan]['cluster'];
             } else {
                 // Handle jika id_kecamatan tidak ditemukan di tabel cluster_results
                 $feature->properties->hasil = null;

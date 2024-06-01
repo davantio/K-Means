@@ -2,105 +2,117 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengelompokan Lahan Produksi Jagung</title>
-    
-    <link rel="shortcut icon" href="{{ asset('dist/assets/compiled/svg/favicon.svg') }}" type="image/x-icon">
-    <link rel="shortcut icon" 
-    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAiCAYAAADRcLDBAAAEs2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjMzIgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMzQiCiAgIGV4aWY6Q29sb3JTcGFjZT0iMSIKICAgdGlmZjpJbWFnZVdpZHRoPSIzMyIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMzQiCiAgIHRpZmY6UmVzb2x1dGlvblVuaXQ9IjIiCiAgIHRpZmY6WFJlc29sdXRpb249Ijk2LjAiCiAgIHRpZmY6WVJlc29sdXRpb249Ijk2LjAiCiAgIHBob3Rvc2hvcDpDb2xvck1vZGU9IjMiCiAgIHBob3Rvc2hvcDpJQ0NQcm9maWxlPSJzUkdCIElFQzYxOTY2LTIuMSIKICAgeG1wOk1vZGlmeURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiCiAgIHhtcDpNZXRhZGF0YURhdGU9IjIwMjItMDMtMzFUMTA6NTA6MjMrMDI6MDAiPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJwcm9kdWNlZCIKICAgICAgc3RFdnQ6c29mdHdhcmVBZ2VudD0iQWZmaW5pdHkgRGVzaWduZXIgMS4xMC4xIgogICAgICBzdEV2dDp3aGVuPSIyMDIyLTAzLTMxVDEwOjUwOjIzKzAyOjAwIi8+CiAgICA8L3JkZjpTZXE+CiAgIDwveG1wTU06SGlzdG9yeT4KICA8L3JkZjpEZXNjcmlwdGlvbj4KIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+Cjw/eHBhY2tldCBlbmQ9InIiPz5V57uAAAABgmlDQ1BzUkdCIElFQzYxOTY2LTIuMQAAKJF1kc8rRFEUxz9maORHo1hYKC9hISNGTWwsRn4VFmOUX5uZZ36oeTOv954kW2WrKLHxa8FfwFZZK0WkZClrYoOe87ypmWTO7dzzud97z+nec8ETzaiaWd4NWtYyIiNhZWZ2TvE946WZSjqoj6mmPjE1HKWkfdxR5sSbgFOr9Ll/rXoxYapQVik8oOqGJTwqPL5i6Q5vCzeo6dii8KlwpyEXFL519LjLLw6nXP5y2IhGBsFTJ6ykijhexGra0ITl5bRqmWU1fx/nJTWJ7PSUxBbxJkwijBBGYYwhBgnRQ7/MIQIE6ZIVJfK7f/MnyUmuKrPOKgZLpEhj0SnqslRPSEyKnpCRYdXp/9++msneoFu9JgwVT7b91ga+LfjetO3PQ9v+PgLvI1xkC/m5A+h7F32zoLXug38dzi4LWnwHzjeg8UGPGbFfySvuSSbh9QRqZ6H+Gqrm3Z7l9zm+h+iafNUV7O5Bu5z3L/wAdthn7QIme0YAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAJTSURBVFiF7Zi9axRBGIefEw2IdxFBRQsLWUTBaywSK4ubdSGVIY1Y6HZql8ZKCGIqwX/AYLmCgVQKfiDn7jZeEQMWfsSAHAiKqPiB5mIgELWYOW5vzc3O7niHhT/YZvY37/swM/vOzJbIqVq9uQ04CYwCI8AhYAlYAB4Dc7HnrOSJWcoJcBS4ARzQ2F4BZ2LPmTeNuykHwEWgkQGAet9QfiMZjUSt3hwD7psGTWgs9pwH1hC1enMYeA7sKwDxBqjGnvNdZzKZjqmCAKh+U1kmEwi3IEBbIsugnY5avTkEtIAtFhBrQCX2nLVehqyRqFoCAAwBh3WGLAhbgCRIYYinwLolwLqKUwwi9pxV4KUlxKKKUwxC6ZElRCPLYAJxGfhSEOCz6m8HEXvOB2CyIMSk6m8HoXQTmMkJcA2YNTHm3congOvATo3tE3A29pxbpnFzQSiQPcB55IFmFNgFfEQeahaAGZMpsIJIAZWAHcDX2HN+2cT6r39GxmvC9aPNwH5gO1BOPFuBVWAZue0vA9+A12EgjPadnhCuH1WAE8ivYAQ4ohKaagV4gvxi5oG7YSA2vApsCOH60WngKrA3R9IsvQUuhIGY00K4flQG7gHH/mLytB4C42EgfrQb0mV7us8AAMeBS8mGNMR4nwHamtBB7B4QRNdaS0M8GxDEog7iyoAguvJ0QYSBuAOcAt71Kfl7wA8DcTvZ2KtOlJEr+ByyQtqqhTyHTIeB+ONeqi3brh+VgIN0fohUgWGggizZFTplu12yW8iy/YLOGWMpDMTPXnl+Az9vj2HERYqPAAAAAElFTkSuQmCC" 
-    type="image/png">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Produksi - SIGPROJAG</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
 
-    <link rel="stylesheet" href="{{ asset('dist/assets/compiled/css/app.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/assets/compiled/css/app-dark.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/assets/compiled/css/iconly.css') }}">
+  <!-- Favicons -->
+  <link href="{{ asset('dist/assets/compiled/svg/favicon.svg') }}" rel="icon">
+  <link href="{{ asset('main/assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ asset('main/assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('main/assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+  <link href="{{ asset('main/assets/vendor/aos/aos.css') }}" rel="stylesheet">
+  <link href="{{ asset('main/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('main/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{{ asset('main/assets/css/main.css') }}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: QuickStart
+  * Template URL: https://bootstrapmade.com/quickstart-bootstrap-startup-website-template/
+  * Updated: May 18 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
-<body>
-    <script src="{{ asset('dist/assets/static/js/initTheme.js') }}"></script>
-    <div id="app">
-        <div id="main" class="layout-horizontal">
-            <header class="mb-5">
-                <div class="header-top">
-                    <div class="container d-flex justify-content-end">
-                        <!-- Burger button responsive -->
-                        <a href="#" class="burger-btn d-block d-xl-none">
-                            <i class="bi bi-justify fs-3"></i>
-                        </a>
+<body class="starter-page-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href="/" class="logo d-flex align-items-center me-auto">
+        <img src="{{ asset('dist/assets/compiled/png/logo.png') }}" alt="Logo" class="img-fluid">
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/#hero" class="">Home</a></li>
+          <li><a href="/#about">About</a></li>
+          <li class="dropdown"><a href="/#services"><span>Features</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/main/produksi">Halaman Produksi</a></li>
+              <li><a href="/main/pemetaan">Halaman Pemetaan</a></li>
+            </ul>
+          </li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="/login">Login</a>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Halaman Produksi</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Produksi</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- Starter Section Section -->
+    <section id="starter-section" class="starter-section section">
+    
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Produksi</h2>
+        <p>Tabel Luas Panen dan Hasil Produksi Jagung tiap Kecamatan</p>
+      </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up">
+            <form action="{{ url('/main/produksi') }}" method="GET">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="helperText">Filter per Tahun</label>
+                    <div>
+                      <select id="tahunSelect" class="choices form-select" name="tahun">
+                        <option value="">Pilih Tahun</option> 
+                        <option value="0">Semua</option> 
+                          @foreach ($availableYears as $year)
+                            <option value="{{ $year }}">{{ $year }}</option>
+                          @endforeach
+                      </select>
                     </div>
+                  </div>
                 </div>
-                <nav class="main-navbar">
-                    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-                        <div class="logo">
-                            <a href="/">
-                                <img src="{{ asset('dist/assets/compiled/png/logo.png') }}" alt="Logo" width="200" height="50">
-                            </a>
-                        </div>
-                    
-                        <ul style="display: flex;">
-                            <li
-                                class="menu-item  ">
-                                <a href="/main/produksi" class='menu-link'>
-                                    <span> Data Produksi</span>
-                                </a>
-                            </li>
-
-                            <li
-                                class="menu-item  ">
-                                <a href="/main/pemetaan" class='menu-link'>
-                                    <span> Pemetaan</span>
-                                </a>
-                            </li>
-
-                            <li
-                                class="menu-item  ">
-                                <a href="/login" class='menu-link'>
-                                    <span> Login</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </header>
-            <div class="content-wrapper container">
-
-            <div class="page-heading">
-                <h3>Luas Panen dan Hasil Produksi Jagung</h3>
-            </div>
-            <div class="page-content">
-                <section class="row">
-                    <div class="col-12 col-lg-12">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title">
-                                            Tabel Luas Panen dan Hasil Produksi Jagung tiap Kecamatan
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <form action="{{ url('/main/produksi') }}" method="GET">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label for="helperText">Filter per Tahun</label>
-                                                        <div>
-                                                            <select id="tahunSelect" class="choices form-select" name="tahun">
-                                                                <option value="">Pilih Tahun</option> 
-                                                                <option value="0">Semua</option> 
-                                                                @foreach ($availableYears as $year)
-                                                                    <option value="{{ $year }}">{{ $year }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <a class="btn btn-danger mb-2" href="/main/export-pdf" role="button" target="_blank">
-                                                <i class="bi bi-file-pdf"></i> Export PDF</a>
-                                            <!-- <button class="btn btn-secondary" type="submit" name="action" value="filter">Filter</button> -->
-                                        </form>
-                                        <div class="table-responsive">
+              </div>
+              <br>
+              <a class="btn btn-danger mb-2" href="/main/export-pdf" role="button" target="_blank">
+                <i class="bi bi-filetype-pdf"></i> Export PDF</a>
+              <!-- <button class="btn btn-secondary" type="submit" name="action" value="filter">Filter</button> -->
+            </form>
+                                          <div class="table-responsive">
                                             <table id="example" class="table table-striped table-bordered datatables" style="width:100%">
                                                 <thead>
                                                     <tr>
@@ -134,40 +146,86 @@
                                                     </tr>
                                                 </tfoot>
                                             </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <footer>
-                <div class="container">
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p>2024 &copy; Mazer</p>
-                        </div>
-                        <div class="float-end">
-                            <p>Crafted with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a
-                                href="https://saugi.me">Saugi</a></p>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+                                          </div>  
+                                         
+                         
         </div>
+
+    </section><!-- /Starter Section Section -->
+
+  </main>
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">SIGPROJAG</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Komplek perkantoran, Raci</p>
+            <p>Kec. Bangil, Pasuruan, 67153</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>(0343) 5616477</span></p>
+            <p><strong>Email:</strong> <span>diskominfo@pasuruankab.go.id</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="/#hero">Home</a></li>
+            <li><a href="/#about">About us</a></li>
+            <li><a href="/#services">Features</a></li>
+            <li><a href="/#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-3 footer-links">
+          <h4>Fitur Kami</h4>
+          <ul>
+            <li><a href="/main/produksi">Halaman Produksi</a></li>
+            <li><a href="/main/pemetaan">Halaman Pemetaan</a></li>
+          </ul>
+        </div>
+
+      </div>
     </div>
-    <script src="{{ asset('dist/assets/static/js/components/dark.js') }}"></script>
-    <script src="{{ asset('dist/assets/static/js/pages/horizontal-layout.js') }}"></script>
-    <script src="{{ asset('dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    
-    <script src="{{ asset('dist/assets/compiled/js/app.js') }}"></script>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">QuickStart</strong><span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ asset('main/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('main/assets/vendor/php-email-form/validate.js') }}"></script>
+  <script src="{{ asset('main/assets/vendor/aos/aos.js') }}"></script>
+  <script src="{{ asset('main/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ asset('main/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{ asset('main/assets/js/main.js') }}"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.0.js" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         new DataTable('#example');
     </script>

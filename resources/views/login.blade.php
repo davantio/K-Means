@@ -22,7 +22,7 @@
 </head>
 
 <body>
-    <script src="{{asset('dist/assets/static/js/initTheme.js')}}"></script>
+    <!-- <script src="{{asset('dist/assets/static/js/initTheme.js')}}"></script> -->
     <div id="auth">
 
         <div class="row h-100">
@@ -31,8 +31,12 @@
                     <div class="auth-logo">
                         <div class="row align-items-end">
                             <div class="col-lg-6 col-md-6 col-sm-7">
-                                <img src="{{ asset('dist/assets/compiled/png/logo.png') }}" class="img-fluid"
-                                    alt="Logo" style="width: 350px; height: auto;" srcset="">
+                                <a href="/">
+                                    <img src="{{ asset('dist/assets/compiled/png/logo.png') }}" alt="Logo" class="img-fluid"
+                                        style="width: 350px; height: auto;" srcset="">
+                                </a>
+                                <!-- <img src="{{ asset('dist/assets/compiled/png/logo.png') }}" class="img-fluid"
+                                    alt="Logo" style="width: 350px; height: auto;" srcset=""> -->
                             </div>
                         </div>
                     </div>

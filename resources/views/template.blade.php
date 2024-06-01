@@ -132,7 +132,7 @@
                         <a href="#" class="burger-btn d-block">
                             <i class="bi bi-justify fs-3"></i>
                         </a>
-                        <span class="ms-3" style="font-size: 26px;">Sistem Informasi Pengelompokan Lahan Produksi Jagung</span>
+                        <span class="ms-3" style="font-size: 20px;">SIGPROJAG</span>
                         
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

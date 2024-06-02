@@ -38,7 +38,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->kode }}</td>
                                     <td>{{ $item->nama }}</td>
-                                    <td><a class="btn btn-warning" href="/kecamatan/edit/{{$item->id_kecamatan}}" role="button">Edit</a> <a class="btn btn-danger" href="/kecamatan/delete/{{$item->id_kecamatan}}" role="button">Delete</a></td>
+                                    <td><a class="btn btn-warning" href="/kecamatan/edit/{{$item->id}}" role="button">Edit</a> <a class="btn btn-danger" href="/kecamatan/delete/{{$item->id}}" role="button">Delete</a></td>
                                 </tr>
                                 @endforeach
                             @endif

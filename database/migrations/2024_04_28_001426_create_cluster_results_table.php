@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('cluster_results', function (Blueprint $table) {
             $table->id();
-            $table->string('id_kecamatan');
+            $table->unsignedBigInteger('id_kecamatan');
             $table->integer('tahun');
             $table->double('luas_panen');
             $table->double('hasil');
             $table->integer('cluster'); // Kolom untuk menunjukkan nomor klaster
             $table->timestamps();
+
+            // Menambahkan foreign key constraint
+            $table->foreign('id_kecamatan')->references('id')->on('kecamatans')->onDelete('cascade');
         });
     }
 

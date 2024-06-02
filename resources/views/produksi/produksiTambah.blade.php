@@ -23,7 +23,7 @@
                                 <select class="choices form-select" name="id_kecamatan">
                                     <option value="">Pilih Kecamatan</option> <!-- Menambahkan pilihan pertama -->
                                     @foreach ($kecamatans as $kecamatan)
-                                        <option value="{{ $kecamatan->id_kecamatan }}">{{ $kecamatan->nama }}</option>
+                                        <option value="{{ $kecamatan->id }}">{{ $kecamatan->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>

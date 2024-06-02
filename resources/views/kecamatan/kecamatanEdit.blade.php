@@ -8,7 +8,7 @@
         </div>
 
         <div class="card-body">
-            <form action="{{url('/kecamatan/update/'.$kecamatan->id_kecamatan)}}" method="POST" enctype="multipart/form-data">
+            <form action="{{url('/kecamatan/update/'.$kecamatan->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row">

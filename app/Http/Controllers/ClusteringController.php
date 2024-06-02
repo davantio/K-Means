@@ -12,7 +12,7 @@ class ClusteringController extends Controller
 {
     public function index(){
         $clustering = Clustering::select('cluster_results.*', 'kecamatans.nama')
-        ->leftJoin('kecamatans', 'cluster_results.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+        ->leftJoin('kecamatans', 'cluster_results.id_kecamatan', '=', 'kecamatans.id')
         ->get();
 
         if (DB::table('reclustering_status')->where('id', 1)->first()->needs_reclustering) {

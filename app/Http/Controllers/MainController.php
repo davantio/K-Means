@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Clustering;
 use App\Models\Produksi;
+use PDF;
 
 class MainController extends Controller
 {
@@ -73,11 +74,11 @@ class MainController extends Controller
 
         if($tahun == 0){
             $produksi = DB::table('produksi')
-            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan');
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id');
             $produksi = $produksi->get();
         }else{
             $produksi = DB::table('produksi')
-            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id')
             ->where('produksi.tahun', $tahun);
             $produksi = $produksi->get();
         }
@@ -92,7 +93,7 @@ class MainController extends Controller
     public function exportPDF(Request $request)
     {
         $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
-            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id_kecamatan')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id')
             ->get();
 
         // Buat PDF menggunakan DOMPDF

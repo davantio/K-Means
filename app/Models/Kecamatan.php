@@ -9,7 +9,7 @@ class Kecamatan extends Model
 {
     use HasFactory;
     protected $table = 'kecamatans';
-    protected $primaryKey = 'id_kecamatan';
+    protected $primaryKey = 'id';
     protected $fillable = ['kode', 'nama'];
     public $timestamps = true;
 

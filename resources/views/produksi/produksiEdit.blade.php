@@ -22,7 +22,7 @@
                             <div>
                                 <select class="choices form-select" name="id_kecamatan">
                                     @foreach ($kecamatans as $kecamatan)
-                                        <option value="{{ $kecamatan->id_kecamatan }}" {{ $produksi->id_kecamatan == $kecamatan->id_kecamatan ? 'selected' : ''}}>
+                                        <option value="{{ $kecamatan->id }}" {{ $produksi->id_kecamatan == $kecamatan->id ? 'selected' : ''}}>
                                             {{ $kecamatan->nama }}</option>
                                     @endforeach
                                 </select>

@@ -89,7 +89,7 @@
 
                         <li class="sidebar-item {{ $currentPath == 'kecamatan' ? 'active' : '' }}">
                             <a href="/kecamatan" class='sidebar-link'>
-                                <i class="bi bi-bookmark-fill"></i>
+                                <i class="bi bi-book-fill"></i>
                                 <span>Data Kecamatan</span>
                             </a>
                         </li>

@@ -70,7 +70,7 @@ class AdminController extends Controller
                 'email',
                 Rule::unique('admins')->ignore($admin->id)
            ],
-           'password' => 'nullable|string|min:8',
+           'password' => 'required|string|min:8',
        ]);
 
        if($validator->fails()){

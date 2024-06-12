@@ -53,7 +53,8 @@ class KecamatanController extends Controller
         // Validasi input menggunakan Validator
         $validator = Validator::make($request->all(), [
             'kode' => [
-                'required'
+                'required',
+                Rule::unique('kecamatans')->ignore($kecamatan->id)
             ],
             'nama' => 'required|string|regex:/^[a-zA-Z\s]+$/'
         ]);

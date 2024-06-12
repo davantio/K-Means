@@ -69,7 +69,7 @@ class ProduksiController extends Controller
     {
         // Validasi input menggunakan Validator
         $validator = Validator::make($request->all(), [
-            'tahun' => 'required',
+            'tahun' => 'required|numeric',
             'id_kecamatan' => 'required',
             'luas_panen' => 'required|numeric',
             'hasil' => 'required|numeric'

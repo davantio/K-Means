@@ -94,7 +94,7 @@
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ $currentPath == 'produksi' ? 'active' : '' }}">
+                        <li class="sidebar-item {{ $currentPath == 'produksi' || $currentPath == 'produksi/filter' ? 'active' : '' }}">
                             <a href="/produksi" class='sidebar-link'>
                                 <i class="bi bi-archive-fill"></i>
                                 <span>Data Produksi</span>

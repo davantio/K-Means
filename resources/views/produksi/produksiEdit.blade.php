@@ -15,7 +15,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="basicInput">Tahun</label>
-                            <input type="text" class="form-control" id="basicInput" name="tahun" value="{{$produksi->tahun}}">
+                            <input type="number" class="form-control" id="basicInput" name="tahun" value="{{$produksi->tahun}}">
                         </div>
                         <div class="form-group">
                             <label for="helperText">Kecamatan</label>
@@ -32,11 +32,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="basicInput">Luas Panen (ha)</label>
-                            <input type="text" class="form-control" id="basicInput" name="luas_panen" value="{{$produksi->luas_panen}}">
+                            <input type="number" class="form-control" id="basicInput" name="luas_panen" 
+                            value="{{$produksi->luas_panen}}" step="any">
                         </div>
                         <div class="form-group">
                             <label for="basicInput">Hasil Produksi (ton)</label>
-                            <input type="text" class="form-control" id="basicInput" name="hasil" value="{{$produksi->hasil}}">
+                            <input type="number" class="form-control" id="basicInput" name="hasil" 
+                            value="{{$produksi->hasil}}" step="any">
                         </div>
                     </div>
                 </div>
@@ -61,6 +63,7 @@
                 var errorMessage = errors;
                 var indonesianMessages = {
                     'The tahun field is required.': 'Kolom Tahun Harus Di Isi',
+                    'The tahun field must be a number.': 'Kolom Tahun Harus Angka',
                     'The id_kecamatan field is required.': 'Kolom Kecamatan Harus Di Isi',
                     'The luas_panen field is required.': 'Kolom Luas Panen Harus Di Isi',
                     'The hasil field is required.': 'Kolom Hasil Produksi Harus Di Isi',

@@ -7,6 +7,18 @@
         #map {
             height: 500px;
         }
+        .legend {
+            background: white;
+            line-height: 1.5em;
+            padding: 10px;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
     </style>
 @endsection
 
@@ -31,7 +43,7 @@
                             <label for="helperText">Tahun</label>
                             <div>
                                 <select class="choices form-select" name="tahun">
-                                    <option value="">Pilih Tahun</option> <!-- Menambahkan pilihan pertama -->
+                                    <option value="2023">Pilih Tahun</option> <!-- Menambahkan pilihan pertama -->
                                     @foreach ($availableYears as $year)
                                         <option value="{{ $year }}">{{ $year }}</option>
                                     @endforeach
@@ -83,7 +95,7 @@
                 }
             },
             onEachFeature: function(feature, layer) {
-            // Tambahkan popup saat mouse hover
+            // Tambahkan popup saat mouse klik
             var namaKecamatan = feature.properties.nama;
             var hasilProduksi = feature.properties.hasil;
             var cluster = feature.properties.cluster;
@@ -97,46 +109,28 @@
             } else {
                 produktivitas = "Tidak Diketahui";
             }
-            layer.bindPopup('<b>Nama Kecamatan:</b> ' + namaKecamatan + '<br><b>Hasil Produksi:</b> ' + hasilProduksi + '<br><b>Klaster:</b> ' + cluster + '<br><b>Produktivitas:</b> ' + produktivitas);
+            layer.bindPopup('<b>Nama Kecamatan:</b> ' + namaKecamatan + '<br><b>Hasil Produksi:</b> ' + hasilProduksi + ' Ton' + '<br><b>Klaster:</b> ' + cluster + '<br><b>Produktivitas:</b> ' + produktivitas);
         }
         }).addTo(map);
 
-        // var stylemap = {
-        //     fillColor: 'green',   // Warna isian (fill color)
-        //     fillOpacity: 0,       // Opasitas isian (fill opacity)
-        //     color: 'black',       // Warna garis tepi (border color)
-        //     weight: 2             // Ketebalan garis tepi (border weight)
-        // }
+        // Fungsi untuk membuat legenda
+        function createLegend(map) {
+            var legend = L.control({ position: 'topright' });
 
-        // //Plugin GeoJSON
-        // function popUp(f,l){
-        //     var out = [];
-        //     if (f.properties){
-        //         for(key in f.properties){
-        //             out.push(key+": "+"<b>"+f.properties[key]+"</b>");
-        //         }
-        //         l.bindPopup(out.join("<br />"));
-        //     }
-        // }
-        // var jsonTest = new L.GeoJSON.AJAX(["{{ asset('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan.geojson') }}"],{onEachFeature:popUp, style:stylemap}).addTo(map);
+            legend.onAdd = function(map) {
+                var div = L.DomUtil.create('div', 'legend');
+                div.innerHTML += '<h4>Keterangan Klaster</h4>';
+                div.innerHTML += '<i style="background: red"></i> Klaster 1 (Produktivitas Rendah)<br>';
+                div.innerHTML += '<i style="background: yellow"></i> Klaster 2 (Produktivitas Sedang)<br>';
+                div.innerHTML += '<i style="background: green"></i> Klaster 3 (Produktivitas Tinggi)<br>';
+                div.innerHTML += '<i style="background: gray"></i> Tidak Diketahui<br>';
+                return div;
+            };
 
+            legend.addTo(map);
+        }
 
-
-        // // Tambahkan layer GeoJSON
-        // var geojsonLayer = L.geoJSON(null, {
-        // style: function (feature) {
-        //     return {
-        //         fillColor: 'green',   // Warna isian (fill color)
-        //         fillOpacity: 0,       // Opasitas isian (fill opacity)
-        //         color: 'black',       // Warna garis tepi (border color)
-        //         weight: 2             // Ketebalan garis tepi (border weight)
-        //     };
-        // }
-        // }).addTo(map);
-        
-        // // Ambil dan tambahkan data GeoJSON dari file
-        // $.getJSON("{{ asset('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan.geojson') }}", function(data) {
-        //     geojsonLayer.addData(data);
-        // });
+        // Memanggil fungsi untuk membuat legenda
+        createLegend(map);
     </script>
 @endsection

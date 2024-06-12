@@ -12,7 +12,7 @@ class AuthController extends Controller
     public function index(Request $request)
     {
         if(Auth::guard('web')->check()){
-            return redirect('/');
+            return redirect('/dashboard');
         }
         return view('login');
     }

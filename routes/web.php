@@ -57,6 +57,8 @@ Route::get('/main/pemetaan',[MainController::class, 'showMap']);
 Route::get('/main/produksi',[MainController::class, 'showProduksi']);
 Route::get('/main/export-pdf', [MainController::class, 'exportPDF']);
 
-Route::get('/login', [AuthController::class, 'index']);
-Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'index']);
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+});
 Route::get('/logout', [AuthController::class, 'logout']);

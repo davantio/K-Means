@@ -29,6 +29,18 @@
         #map {
             height: 500px;
         }
+        .legend {
+            background: white;
+            line-height: 1.5em;
+            padding: 10px;
+        }
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+        }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link href="{{ asset('main/assets/css/main.css') }}" rel="stylesheet">
@@ -103,7 +115,7 @@
                   <label for="helperText">Tahun</label>
                   <div>
                     <select class="choices form-select" name="tahun">
-                      <option value="">Pilih Tahun</option> 
+                      <option value="2023">Pilih Tahun</option> 
                       @foreach ($availableYears as $year)
                         <option value="{{ $year }}">{{ $year }}</option>
                       @endforeach
@@ -222,7 +234,7 @@
                 }
             },
             onEachFeature: function(feature, layer) {
-            // Tambahkan popup saat mouse hover
+            // Tambahkan popup saat mouse klik
             var namaKecamatan = feature.properties.nama;
             var hasilProduksi = feature.properties.hasil;
             var cluster = feature.properties.cluster;
@@ -236,9 +248,29 @@
             } else {
                 produktivitas = "Tidak Diketahui";
             }
-            layer.bindPopup('<b>Nama Kecamatan:</b> ' + namaKecamatan + '<br><b>Hasil Produksi:</b> ' + hasilProduksi + '<br><b>Klaster:</b> ' + cluster + '<br><b>Produktivitas:</b> ' + produktivitas);
+            layer.bindPopup('<b>Nama Kecamatan:</b> ' + namaKecamatan + '<br><b>Hasil Produksi:</b> ' + hasilProduksi + ' Ton' + '<br><b>Klaster:</b> ' + cluster + '<br><b>Produktivitas:</b> ' + produktivitas);
         }
         }).addTo(map);
+
+        // Fungsi untuk membuat legenda
+        function createLegend(map) {
+            var legend = L.control({ position: 'topright' });
+
+            legend.onAdd = function(map) {
+                var div = L.DomUtil.create('div', 'legend');
+                div.innerHTML += '<h4>Keterangan Klaster</h4>';
+                div.innerHTML += '<i style="background: red"></i> Klaster 1 (Produktivitas Rendah)<br>';
+                div.innerHTML += '<i style="background: yellow"></i> Klaster 2 (Produktivitas Sedang)<br>';
+                div.innerHTML += '<i style="background: green"></i> Klaster 3 (Produktivitas Tinggi)<br>';
+                div.innerHTML += '<i style="background: gray"></i> Tidak Diketahui<br>';
+                return div;
+            };
+
+            legend.addTo(map);
+        }
+
+        // Memanggil fungsi untuk membuat legenda
+        createLegend(map);
     </script>
 
 </body>

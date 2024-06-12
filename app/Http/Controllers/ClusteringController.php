@@ -225,7 +225,7 @@ class ClusteringController extends Controller
         //dd($availableYears);
 
         // Ambil tahun yang dipilih oleh pengguna dari input form
-        $tahun = $request->input('tahun'); // Jika tidak ada tahun yang dipilih, gunakan tahun 2019 sebagai default
+        $tahun = $request->input('tahun', 2023); // Jika tidak ada tahun yang dipilih, gunakan tahun 2019 sebagai default
 
         // Muat file GeoJSON yang sudah ada
         $geojsonFile = file_get_contents(public_path('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan_New.geojson'));

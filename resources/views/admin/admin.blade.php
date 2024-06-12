@@ -43,7 +43,12 @@
                                     <td>{{ $item->nip }}</td>
                                     <td>{{ $item->jenis_kelamin }}</td>
                                     <td>{{ $item->email }}</td>
-                                    <td><a class="btn btn-warning" href="/admin/edit/{{$item->id}}" role="button">Edit</a> <a class="btn btn-danger" href="/admin/delete/{{$item->id}}" role="button">Delete</a></td>
+                                    <td>
+                                        @if (Auth::check() && Auth::user()->email == $item->email || Auth::user()->email == 'admin@gmail.com')
+                                            <a class="btn btn-warning" href="/admin/edit/{{$item->id}}" role="button">Edit</a> 
+                                            <a class="btn btn-danger" href="/admin/delete/{{$item->id}}" role="button">Delete</a>
+                                        @endif 
+                                    </td>
                                 </tr>
                                 @endforeach
                             @endif

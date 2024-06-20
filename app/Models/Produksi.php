@@ -14,11 +14,14 @@ class Produksi extends Model
     protected $fillable = ['tahun', 'id_kecamatan', 'luas_panen', 'hasil'];
     public $timestamps = true;
 
+    //Mendefinisikan event listener untuk model
     protected static function boot()
     {
         parent::boot();
 
+        //Event listener untuk event 'created'
         static::created(function ($produksi) {
+            //Memanggil metode 'markFor..' dengan parameter new
             self::markForReclustering('new');
         });
 
@@ -31,8 +34,10 @@ class Produksi extends Model
         });
     }
 
+    //Membuat metode untuk menangani jenis event
     private static function markForReclustering($type)
     {
+        //Memperbarui/membuat record yang ada berdasarkan kondisi
         DB::table('reclustering_status')->updateOrInsert(
             ['id' => 1],
             ['needs_reclustering' => true, 'type' => $type]

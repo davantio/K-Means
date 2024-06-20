@@ -15,6 +15,9 @@ class ClusteringController extends Controller
         ->leftJoin('kecamatans', 'cluster_results.id_kecamatan', '=', 'kecamatans.id')
         ->get();
 
+        //Memeriksa status reclustering untuk baris dengan id 1
+        //first() digunakan untuk mengambil satu baris pertama dari hasil query
+        //Jika needs_reclustering bernilai 'true', maka jalankan blok if
         if (DB::table('reclustering_status')->where('id', 1)->first()->needs_reclustering) {
             $notificationType = 'warning';
             $notificationMessage = 'Terdapat Perubahan Data, Silahkan Lakukan Proses Clustering.';
@@ -42,26 +45,26 @@ class ClusteringController extends Controller
 
     public function kMeansClustering(Request $request)
     {
-        //$tahun = $request->input('tahun');
-
-        // Periksa apakah clustering ulang diperlukan
+        // Mengambil status reclustering untuk baris dengan id 1 dan mengambil satu baris pertama dari hasil query sebagai objek
         $status = DB::table('reclustering_status')->where('id', 1)->first();
 
+        //Memeriksa apakah tidak ada baris yang ditemukan di id 1 atau needs_reclustering bernilai 'false'
+        //Jika salah satu kondisi benar, maka blok if akan dijalankan
         if (!$status || !$status->needs_reclustering) {
             return redirect('/clustering')->with('info', "Tidak ada perubahan pada data. Clustering tidak diperlukan.");
         }
 
         $data = Produksi::select('luas_panen', 'hasil', 'id_kecamatan', 'tahun')
-            // ->where('tahun', $tahun)
             ->get();
 
         // Inisialisasi jumlah klaster
         $k = 3; 
 
-        //Centroid Random
+        // Menginisialisasi Centroid Random
         $centroids = $this->initializeCentroids($data, $k);
 
         // Iterasi hingga konvergensi/kesamaan cluster dengan iterasi sebelumnya
+        // Menetapkan max iterasi adalah 100
         $maxIterations = 100;
         for ($i = 0; $i < $maxIterations; $i++) {
             // Hitung jarak dan menetapkan setiap titik data ke klaster yang paling dekat dengan centroid
@@ -78,7 +81,7 @@ class ClusteringController extends Controller
             $centroids = $newCentroids;
         }
 
-        // Jenis perubahan data: new, update, delete
+        // Memeriksa jenis perubahan data: new, update, delete
         $changeType = $status->type;
 
         if ($changeType === 'delete' || $changeType === 'update') {
@@ -113,8 +116,9 @@ class ClusteringController extends Controller
                 }
             }
         } else {
-            // Simpan hasil klasterisasi untuk semua data
+            // Melakukan iterasi melalui setiap cluster dalam array $clusters dan setiap point data dalam setiap cluster
             foreach ($clusters as $clusterIndex => $cluster) {
+                // $cluster merupakan array yang berisi data point, setiap data point adalah objek atau array
                 foreach ($cluster as $point) {
                     Clustering::create([
                         'id_kecamatan' => $point->id_kecamatan,
@@ -217,6 +221,7 @@ class ClusteringController extends Controller
 
     public function showMap(Request $request)
     {
+        //Mengambil data tahun
         $availableYears = DB::table('cluster_results')
         ->select('tahun')
         ->distinct()
@@ -225,7 +230,7 @@ class ClusteringController extends Controller
         //dd($availableYears);
 
         // Ambil tahun yang dipilih oleh pengguna dari input form
-        $tahun = $request->input('tahun', 2023); // Jika tidak ada tahun yang dipilih, gunakan tahun 2019 sebagai default
+        $tahun = $request->input('tahun', 2023); // Jika tidak ada tahun yang dipilih, gunakan tahun 2023 sebagai default
 
         // Muat file GeoJSON yang sudah ada
         $geojsonFile = file_get_contents(public_path('dist/assets/compiled/js/Batas_Kec_Kab_Pasuruan_New.geojson'));

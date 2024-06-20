@@ -43,6 +43,15 @@ class ProduksiController extends Controller
             return redirect('/produksi/tambah')->withErrors($validator)->withInput();
         }
 
+        // Cek apakah data dengan tahun dan id_kecamatan yang sama sudah ada
+        $existingProduksi = Produksi::where('tahun', $request->tahun)
+            ->where('id_kecamatan', $request->id_kecamatan)
+            ->first();
+
+        if ($existingProduksi) {
+            return redirect('/produksi/tambah')->with('error', "Data dengan tahun dan kecamatan yang sama sudah ada.")->withInput();
+        }
+
         Produksi::create([
             'tahun' => $request->tahun,
             'id_kecamatan' => $request->id_kecamatan,
@@ -81,6 +90,16 @@ class ProduksiController extends Controller
 
         try {
             $produksi = Produksi::findOrFail($id);
+
+            // Cek apakah data dengan tahun dan id_kecamatan yang sama sudah ada
+            $existingProduksi = Produksi::where('tahun', $request->tahun)
+                ->where('id_kecamatan', $request->id_kecamatan)
+                ->where('id', '!=', $id) // Pastikan untuk mengecualikan entri yang sedang diedit
+                ->first();
+
+            if ($existingProduksi) {
+                return redirect('/produksi/edit/' . $id)->with('error', 'Data dengan tahun dan kecamatan yang sama sudah ada.')->withInput();
+            }
 
             // Update atribut sesuai dengan permintaan
             $produksi->tahun = $request->tahun;
@@ -124,14 +143,14 @@ class ProduksiController extends Controller
         $tahun = $request->input('tahun');
 
         if($tahun == 0){
-            $produksi = DB::table('produksi')
-            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id');
-            $produksi = $produksi->get();
-        }else{
-            $produksi = DB::table('produksi')
+            $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
             ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id')
-            ->where('produksi.tahun', $tahun);
-            $produksi = $produksi->get();
+            ->get();
+        }else{
+            $produksi = Produksi::select('produksi.*', 'kecamatans.nama')
+            ->leftJoin('kecamatans', 'produksi.id_kecamatan', '=', 'kecamatans.id')
+            ->where('produksi.tahun', $tahun)
+            ->get();
         }
 
         $availableYears = Produksi::select('tahun')
